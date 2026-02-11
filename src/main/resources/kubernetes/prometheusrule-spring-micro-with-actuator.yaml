@@ -3,11 +3,11 @@
 apiVersion: monitoring.coreos.com/v1
 kind: PrometheusRule
 metadata:
-  name: spring-micro-with-actuator.rules
+  name: spring-boot-rest-with-actuator.rules
   namespace: default
 spec:
   groups:
-  - name: spring-micro-with-actuator.rules
+  - name: spring-boot-rest-with-actuator.rules
     rules:
 
     # exposed at /prometheus
@@ -16,7 +16,7 @@ spec:
         description: on {{ $externalLabels.cluster }}, product {{ $labels.pname }} has reached low inventory levels, only {{ $value }} left
         remediation: login to {{ $externalLabels.env }} cluster {{ $externalLabels.cluster }} using jumpbox {{ $externalLabels.jumpbox }} and order more {{ $labels.pname }} using the /swagger-ui/index.html page
       # do not specify job so that all low_inventory_count sources are considered
-      # instead of specifying job="spring-micro-with-actuator" OR job="kubernetes-service-endpoints"
+      # instead of specifying job="spring-boot-rest-with-actuator" OR job="kubernetes-service-endpoints"
       expr: low_inventory_count{}<3
       for: 10s # 1m
       labels:
@@ -28,7 +28,7 @@ spec:
         description: on {{ $externalLabels.cluster }}, product {{ $labels.pname }} has reached low inventory levels, only {{ $value }} left
         remediation: login to {{ $externalLabels.env }} cluster {{ $externalLabels.cluster }} using jumpbox {{ $externalLabels.jumpbox }} and order more {{ $labels.pname }} using the /swagger-ui/index.html page
       # do not specify job so that all low_inventory_count sources are considered
-      # instead of specifying job="spring-micro-with-actuator" OR job="kubernetes-service-endpoints"
+      # instead of specifying job="spring-boot-rest-with-actuator" OR job="kubernetes-service-endpoints"
       expr: custom_low_inventory_count{}<3
       for: 10s # 1m
       labels:

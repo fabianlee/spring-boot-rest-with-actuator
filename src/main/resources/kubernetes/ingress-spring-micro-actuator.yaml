@@ -35,7 +35,7 @@ spec:
         #path: "/metrics(/|$)(.*)"
         backend:
           service:
-            name: spring-micro-with-actuator
+            name: spring-boot-rest-with-actuator
             port:
               number: 8081
 

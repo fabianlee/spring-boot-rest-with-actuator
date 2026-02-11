@@ -2,26 +2,26 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: spring-micro-with-actuator
+  name: spring-boot-rest-with-actuator
   # allow for override: kubectl -n <ns> apply ...
   #namespace: default
 spec:
   selector:
     matchLabels:
-      app: spring-micro-with-actuator
+      app: spring-boot-rest-with-actuator
   # kubectl scale --replicas=x deployment/gunicorn-hello-world-web
   replicas: 1
   template:
     metadata:
       labels:
-        app: spring-micro-with-actuator
+        app: spring-boot-rest-with-actuator
       annotations:
         sidecar.istio.io/inject: "false"
     spec:
 
       containers:
-      - name: spring-micro-with-actuator
-        image: fabianlee/spring-micro-with-actuator:${VERSION}
+      - name: spring-boot-rest-with-actuator
+        image: fabianlee/spring-boot-rest-with-actuator:${VERSION}
         imagePullPolicy: Always
 
         # resource limits
@@ -77,10 +77,10 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: spring-micro-with-actuator
+  name: spring-boot-rest-with-actuator
   #namespace: default
   labels:
-    app: spring-micro-with-actuator
+    app: spring-boot-rest-with-actuator
   annotations:
     # set to true if you want our custom prometheus scraper to gather custom metrics
     prometheus.io/path: /actuator/prometheus
@@ -96,4 +96,4 @@ spec:
     targetPort: 8081 # exposed from inside container
     protocol: TCP
   selector:
-    app: spring-micro-with-actuator
+    app: spring-boot-rest-with-actuator

@@ -36,4 +36,4 @@ spec:
     - default
   selector:
     matchLabels:
-      app: spring-micro-with-actuator
+      app: spring-boot-rest-with-actuator

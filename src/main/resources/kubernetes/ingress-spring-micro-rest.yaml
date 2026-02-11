@@ -29,14 +29,14 @@ spec:
         path: /api/product
         backend:
           service:
-            name: spring-micro-with-actuator
+            name: spring-boot-rest-with-actuator
             port:
               number: 8080
       - pathType: Prefix
         path: /api/user
         backend:
           service:
-            name: spring-micro-with-actuator
+            name: spring-boot-rest-with-actuator
             port:
               number: 8080
       # set of metrics to be auto-picked up by Prometheus
@@ -44,7 +44,7 @@ spec:
         path: /metrics
         backend:
           service:
-            name: spring-micro-with-actuator
+            name: spring-boot-rest-with-actuator
             port:
               number: 8080
 
@@ -53,13 +53,13 @@ spec:
         path: /swagger-ui
         backend:
           service:
-            name: spring-micro-with-actuator
+            name: spring-boot-rest-with-actuator
             port:
               number: 8080
       - pathType: Prefix
         path: /v3/api-docs
         backend:
           service:
-            name: spring-micro-with-actuator
+            name: spring-boot-rest-with-actuator
             port:
               number: 8080

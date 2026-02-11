@@ -6,6 +6,12 @@ This is a small REST API built with the Spring Boot 4 framework, to illustrate t
 * Exposing metrics via [Actuator](https://docs.spring.io/spring-boot/docs/3.0.x/actuator-api/htmlsingle/) and [Micrometer](https://docs.micrometer.io/micrometer/reference/) for Prometheus consumption
 * Testing custom ServiceMonitor and Prometheus alerts coming from service
 
+## Libraries
+
+* Spring Boot 4.0.2
+* OpenAPI 3.0.1
+* H2 database 2.4
+
 ## Domain Model
 
 The domain model is a simple product inventory.  You have a list of [Products](https://github.com/fabianlee/spring-boot-rest-with-actuator/blob/main/src/main/java/org/fabianlee/springbootrestwithactuator/product/Product.java), where each has:
