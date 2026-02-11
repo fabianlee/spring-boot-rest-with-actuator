@@ -9,10 +9,24 @@ version = '1.0.0'
 description = 'REST with observability'
 def dockerOwner = 'fabianlee'
 
+// ADDED want standard name for jar so Dockerfile works without modification of <name>-<release>.jar
+bootJar {
+  archiveFileName = "springBoot.jar"
+}
+
+// ADDED ability to specify docker owner and version on command line
+// https://hub.docker.com/_/eclipse-temurin/tags
+ext.dockerOwner = project.hasProperty('dockerOwner') ? project.getProperty('dockerOwner'):'fabianlee'
+ext.dockerVersion = project.hasProperty('dockerVersion') ? project.getProperty('dockerVersion'):'1.0.0'
+
+
 java {
 	toolchain {
 		languageVersion = JavaLanguageVersion.of(25)
 	}
+	// https://www.baeldung.com/gradle-sourcecompatiblity-vs-targetcompatibility
+	targetCompatibility = '21' // generate target classes compatible with Java 21
+	sourceCompatibility = '21' // source files need to be compatible with Java 21
 }
 
 repositories {
@@ -34,9 +48,7 @@ dependencies {
 	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
 	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
-	// CUSTOM - migrating away from openapi v1
-	//implementation 'org.springdoc:springdoc-openapi-ui'
-	// https://springdoc.org/#migrating-from-springdoc-v1
+	// OpenAPI / Swagger UI
 	// https://springdoc.org/#what-is-the-compatibility-matrix-of-springdoc-openapi-with-spring-boot
 	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.1'
 }
@@ -48,4 +60,40 @@ tasks.named('test') {
 // makes BuildProperties available from Spring context
 springBoot {
     buildInfo()
+}
+
+// ADDED to make Dockerfile available in build directory
+task copyDockerfile(type: Copy) {
+  from 'src/main/resources/docker/Dockerfile'
+  into 'build/libs'
+}
+
+// ADDED set ownerProject for use in docker/podman/buildah tasks
+ext.ownerProject = "${dockerOwner}/${project.name}"
+
+// ADDED build OCI image using Docker
+task docker(type: Exec) {
+    group "OCI"
+    dependsOn bootJar
+    dependsOn "copyDockerfile"
+    workingDir "${buildDir}/libs"
+    commandLine "docker", "build", "-f", "Dockerfile", "-t", "${ownerProject}:${dockerVersion}", "-t", "${ownerProject}:latest", "."
+}
+
+// ADDED build OCI image using Buildah (not available via brew install on MacOS)
+task buildah(type: Exec) {
+    group "OCI"
+    dependsOn bootJar
+    dependsOn "copyDockerfile"
+    workingDir "${buildDir}/libs"
+    commandLine "buildah", "bud", "-f", "Dockerfile", "-t", "${ownerProject}:latest", "-t", "docker.io/${ownerProject}:latest","-t", "docker.io/${ownerProject}:${dockerVersion}","-t","ghcr.io/${ownerProject}:latest","-t","ghcr.io/${ownerProject}:${dockerVersion}", "."
+}
+
+// ADDED build OCI image using podman (available via brew install on MacOS)
+task podman(type: Exec) {
+    group "OCI"
+    dependsOn bootJar
+    dependsOn "copyDockerfile"
+    workingDir "${buildDir}/libs"
+    commandLine "podman", "build", "-f", "Dockerfile", "-t", "${ownerProject}:latest", "-t", "docker.io/${ownerProject}:latest","-t", "docker.io/${ownerProject}:${dockerVersion}","-t","ghcr.io/${ownerProject}:latest","-t","ghcr.io/${ownerProject}:${dockerVersion}", "."
 }

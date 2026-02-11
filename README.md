@@ -105,11 +105,12 @@ expr: low_inventory_count{}<3
 ./gradlew tasks
 ./gradlew --refresh-dependencies
 ./gradlew build -x test
+
 # run application in one console
-./gradlew bootRun
+./gradlew bootJar bootRun
+
 # run in another console to auto-update when files changed
 ./gradlew build --continuous
-
 
 ## Building Docker image and running locally
 
@@ -118,6 +119,9 @@ expr: low_inventory_count{}<3
 ./gradlew bootJar docker
 # push to Docker Hub
 ./gradlew bootJar dockerPush
+
+# build OCI image with podman (not docker)
+./gradlew podman [-PdockerVersion=1.0.1 ]
 
 
 export VERSION=0.0.2-SNAPSHOT
