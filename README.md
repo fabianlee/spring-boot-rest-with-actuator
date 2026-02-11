@@ -1,6 +1,6 @@
-#  Spring Boot REST microservice with OpenAPI docs and exported Prometheus metrics
+#  Spring Boot 4 REST microservice with OpenAPI docs and exported Prometheus metrics
 
-This is a small REST API built with the Spring Boot framework, to illustrate the use of:
+This is a small REST API built with the Spring Boot 4 framework, to illustrate the use of:
 
 * OpenAPI standard ([Swagger](https://swagger.io/tools/swagger-ui/)) for [documentation](http://server:port/context-path/v3/api-docs) and interactive testing
 * Exposing metrics via [Actuator](https://docs.spring.io/spring-boot/docs/3.0.x/actuator-api/htmlsingle/) and [Micrometer](https://docs.micrometer.io/micrometer/reference/) for Prometheus consumption
@@ -8,8 +8,7 @@ This is a small REST API built with the Spring Boot framework, to illustrate the
 
 ## Domain Model
 
-The domain model is a simple product inventory.  You have a list of [Products]
-(blob/main/src/main/java/org/fabianlee/springbootrestwithactuator/product/Product.java), where each has:
+The domain model is a simple product inventory.  You have a list of [Products](blob/main/src/main/java/org/fabianlee/springbootrestwithactuator/product/Product.java), where each has:
 
 * id (long, database unique identifier)
 * name (string, 120 chars in length describing item)
