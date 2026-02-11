@@ -8,17 +8,18 @@ This is a small REST API built with the Spring Boot framework, to illustrate the
 
 ## Domain Model
 
-The domain model is a simple product inventory.  You have a list of [Products](blob/src/main/java/org/fabianlee/springbootrestwithactuator/product/Product.java), where each has:
+The domain model is a simple product inventory.  You have a list of [Products]
+(blob/main/src/main/java/org/fabianlee/springbootrestwithactuator/product/Product.java), where each has:
 
 * id (long, database unique identifier)
 * name (string, 120 chars in length describing item)
 * count (int, how many items are still available)
 * price (double, price of each item in dollars and cents)
 
-These objects are stored in an H2 in-memory database, using JPA for a simple [CrudRepository of Product](blob/src/main/java/org/fabianlee/springbootrestwithactuator/product/ProductRepository.java).  This database can be browsed with the h2-console web UI at:
+These objects are stored in an H2 in-memory database, using JPA for a simple [CrudRepository of Product](blob/main/src/main/java/org/fabianlee/springbootrestwithactuator/product/ProductRepository.java).  This database can be browsed with the h2-console web UI at:
 * http://localhost:8080/h2-console (jdbc url=jdbc:h2:mem:testdb; username=sa, password=&lt;empty&gt;)
 
-The [data.sql](blob/src/main/resources/data.sql) file populates the database at container startup.
+The [data.sql](blob/main/src/main/resources/data.sql) file populates the database at container startup.
 
 ```
 insert into products (id,name,count,price) VALUES (1,'Wrist Watch7',113,24.95);
@@ -30,12 +31,12 @@ insert into products (id,name,count,price) VALUES (4,'LCD Monitor',5,199.00);
 The system considers a product in low inventory if there are less than 3 in stock.  For example, you can see we start with 3 Coffe Cups, so if even one is purchased, 
 the system will consider this product in low inventory and send alerts.
 
-If there are no items left in stock, the custom [ProductHealthIndicator](blob/src/main/java/org/fabianlee/springbootrestwithactuator/actuator/ProductHealthIndicator.java) will start reporting "DOWN", at http://localhost:8081/actuator/health.  When deployed in Kubernetes, this will cause the container to be marked unhealthy and restarted since this is its [healthcheck](blob/src/main/resources/kubernetes/deployment-spring-micro-with-actuator.yaml).
+If there are no items left in stock, the custom [ProductHealthIndicator](blob/main/src/main/java/org/fabianlee/springbootrestwithactuator/actuator/ProductHealthIndicator.java) will start reporting "DOWN", at http://localhost:8081/actuator/health.  When deployed in Kubernetes, this will cause the container to be marked unhealthy and restarted since this is its [healthcheck](blob/main/src/main/resources/kubernetes/deployment-spring-micro-with-actuator.yaml).
 
 
 ## REST Service
 
-The [REST service](blob/src/main/java/org/fabianlee/springbootrestwithactuator/product/ProductController.java) exposes the following resource endpoints:
+The [REST service](blob/main/src/main/java/org/fabianlee/springbootrestwithactuator/product/ProductController.java) exposes the following resource endpoints:
 
 * GET /api/product - list all products
 * GET /api/product/{id} - fetch a product by id
@@ -65,7 +66,7 @@ to achieve Prometheus monitoring integration.
 ### JVM and custom metrics exposed at :8081/prometheus:
 
 The 'micrometer-registry-prometheus' package by default exposes many generic JVM level metrics such as memory and disk utilization at :8081/prometheus.  We can add our own custom
-metrics to this endpoint by creating a Class that uses [constructor injection of the MeterRegistry](blob/src/main/java/org/fabianlee/springbootrestwithactuator/actuator/MyMetricsCustomBean.java).
+metrics to this endpoint by creating a Class that uses [constructor injection of the MeterRegistry](blob/main/src/main/java/org/fabianlee/springbootrestwithactuator/actuator/MyMetricsCustomBean.java).
 
 
 * number_of_sales - how many items have been sold since the service started
@@ -76,7 +77,7 @@ metrics to this endpoint by creating a Class that uses [constructor injection of
 
 ### JVM and custom metrics exposed at :8081/prometheus-custom:
 
-We can expose our own Actuator custom endpoint at ':8081/actuator/prometheus-custom' by using the [ControllerEndpoint annotation](blob/src/main/java/org/fabianlee/springbootrestwithactuator/actuator/CustomPrometheusEndpoint.java):
+We can expose our own Actuator custom endpoint at ':8081/actuator/prometheus-custom' by using the [ControllerEndpoint annotation](blob/main/src/main/java/org/fabianlee/springbootrestwithactuator/actuator/CustomPrometheusEndpoint.java):
 
 * custom_number_of_sales - how many items have been sold since the service started
 * custom_total_revenue - the total dollar amount that has been sold using this service (any and all items)
@@ -88,7 +89,7 @@ We can expose our own Actuator custom endpoint at ':8081/actuator/prometheus-cus
 
 Once these values are scraped using Prometheus, they can be configured for alerts.
 
-For example, here is the [PrometheusRule expression](blob/src/main/resources/kubernetes/prometheusrule-spring-micro-with-actuator.yaml) that triggers when a product is reaching low levels of inventory (<3 left).
+For example, here is the [PrometheusRule expression](blob/main/src/main/resources/kubernetes/prometheusrule-spring-micro-with-actuator.yaml) that triggers when a product is reaching low levels of inventory (<3 left).
 
 ```
 expr: low_inventory_count{}<3
