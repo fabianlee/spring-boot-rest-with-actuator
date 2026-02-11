@@ -8,14 +8,14 @@ This is a small REST API built with the Spring Boot 4 framework, to illustrate t
 
 ## Domain Model
 
-The domain model is a simple product inventory.  You have a list of [Products](blob/main/src/main/java/org/fabianlee/springbootrestwithactuator/product/Product.java), where each has:
+The domain model is a simple product inventory.  You have a list of [Products](/blob/main/src/main/java/org/fabianlee/springbootrestwithactuator/product/Product.java), where each has:
 
 * id (long, database unique identifier)
 * name (string, 120 chars in length describing item)
 * count (int, how many items are still available)
 * price (double, price of each item in dollars and cents)
 
-These objects are stored in an H2 in-memory database, using JPA for a simple [CrudRepository of Product](blob/main/src/main/java/org/fabianlee/springbootrestwithactuator/product/ProductRepository.java).  This database can be browsed with the h2-console web UI at:
+These objects are stored in an H2 in-memory database, using JPA for a simple [CrudRepository of Product](/blob/main/src/main/java/org/fabianlee/springbootrestwithactuator/product/ProductRepository.java).  This database can be browsed with the h2-console web UI at:
 * http://localhost:8080/h2-console (jdbc url=jdbc:h2:mem:testdb; username=sa, password=&lt;empty&gt;)
 
 The [data.sql](blob/main/src/main/resources/data.sql) file populates the database at container startup.
