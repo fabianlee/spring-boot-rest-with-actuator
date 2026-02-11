@@ -1,0 +1,51 @@
+plugins {
+	id 'java'
+	id 'org.springframework.boot' version '4.0.2'
+	id 'io.spring.dependency-management' version '1.1.7'
+}
+
+group = 'org.fabianlee'
+version = '1.0.0'
+description = 'REST with observability'
+def dockerOwner = 'fabianlee'
+
+java {
+	toolchain {
+		languageVersion = JavaLanguageVersion.of(25)
+	}
+}
+
+repositories {
+	mavenCentral()
+}
+
+dependencies {
+	implementation 'org.springframework.boot:spring-boot-h2console'
+	implementation 'org.springframework.boot:spring-boot-starter-actuator'
+	implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+	implementation 'org.springframework.boot:spring-boot-starter-thymeleaf'
+	implementation 'org.springframework.boot:spring-boot-starter-webmvc'
+	developmentOnly 'org.springframework.boot:spring-boot-devtools'
+	runtimeOnly 'com.h2database:h2'
+	runtimeOnly 'io.micrometer:micrometer-registry-prometheus'
+	testImplementation 'org.springframework.boot:spring-boot-starter-actuator-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-thymeleaf-test'
+	testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
+	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+
+	// CUSTOM - migrating away from openapi v1
+	//implementation 'org.springdoc:springdoc-openapi-ui'
+	// https://springdoc.org/#migrating-from-springdoc-v1
+	// https://springdoc.org/#what-is-the-compatibility-matrix-of-springdoc-openapi-with-spring-boot
+	implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.1'
+}
+
+tasks.named('test') {
+	useJUnitPlatform()
+}
+
+// makes BuildProperties available from Spring context
+springBoot {
+    buildInfo()
+}
