@@ -19,10 +19,13 @@ bootJar {
 ext.dockerOwner = project.hasProperty('dockerOwner') ? project.getProperty('dockerOwner'):'fabianlee'
 ext.dockerVersion = project.hasProperty('dockerVersion') ? project.getProperty('dockerVersion'):'1.0.0'
 
+// use JDK >= 25
+def currentJavaVersion = System.getProperty("java.version").split('\\.')[0].replaceAll("[^0-9]", "") as Integer
+def toolchainVersion = (currentJavaVersion >= 25) ? currentJavaVersion : 25
 
 java {
 	toolchain {
-		languageVersion = JavaLanguageVersion.of(25)
+		languageVersion = JavaLanguageVersion.of(toolchainVersion)
 	}
 	// https://www.baeldung.com/gradle-sourcecompatiblity-vs-targetcompatibility
 	targetCompatibility = '21' // generate target classes compatible with Java 21
