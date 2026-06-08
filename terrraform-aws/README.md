@@ -63,7 +63,7 @@ aws ecr create-repository \
   --repository-name spring-boot-websocket \
   --region $AWS_REGION
 
-# can use either docker or podmain
+# can use either docker or podman
 OCI_tool=docker|podmain
 # Build the Docker image
 cd build/libs
