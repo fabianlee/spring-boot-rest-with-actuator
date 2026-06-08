@@ -28,7 +28,7 @@ cpu_target = 70            # 70% CPU utilization
 memory_target = 80         # 80% memory utilization
 
 # ECR Image
-# Replace with your ECR repository URL
+# Replace with your AWS ECR repository URL
 # ecr_repository_url = "ACCOUNT_ID.dkr.ecr.us-east-1.amazonaws.com/spring-boot-websocket:latest"
 ecr_repository_url = "ghcr.io/fabianlee/spring-boot-websocket-aws:latest"
 
