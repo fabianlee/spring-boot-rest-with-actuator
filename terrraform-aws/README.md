@@ -1,4 +1,4 @@
-# Deployment of Spring Boot WebSocket on ECS
+# Deployment of Spring Boot on ECS
 
 This IaC configuration deploys the Spring Boot WebSocket application to AWS ECS with an Application Load Balancer (ALB).
 
