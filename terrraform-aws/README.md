@@ -83,88 +83,20 @@ $OCI_tool tag spring-boot-websocket:latest \
 $OCI_tool push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/spring-boot-websocket:latest
 ```
 
-### 2. Configure $TF_tool Variables
-
-Copy the example file and update with your values:
-
-```bash
-cp terraform.tfvars.example terraform.tfvars
-```
+### 2. Configure IaC Variables
 
 Edit `terraform.tfvars` and update:
 - `ecr_repository_url`: Your ECR image URL
 - Other variables as needed
 
-### 3. Initialize Terraform
+### 3. Run Terraform/Tofu
 
 ```bash
 # chose between $TF_tool or tofu
 TF_tool=terraform|tofu
 
 $TF_tool init
-```
 
-### 4. Review and Apply Configuration
-
-```bash
-```markdown
-# $TF_tool Configuration for Spring Boot WebSocket on ECS
-
-This $TF_tool configuration deploys the Spring Boot WebSocket application to AWS ECS with an Application Load Balancer (ALB).
-
-
-## Prerequisites
-
-1. **Terraform** >= 1.0
-2. **AWS CLI** configured with appropriate credentials
-3. **Docker image** pushed to ECR (Elastic Container Registry) or accessible container registry
-4. **AWS Account** with appropriate permissions
-
-## Setup Instructions
-
-### 1. Build and Push Docker Image to ECR (example)
-
-```bash
-# Get your AWS Account ID
-ACCOUNT_ID=$(aws sts get-caller-identity --query Account --output text)
-AWS_REGION="us-east-1"
-
-# Create ECR repository (if needed)
-aws ecr create-repository \
-  --repository-name spring-boot-websocket \
-  --region $AWS_REGION || true
-
-# Build the Docker image
-docker build -t spring-boot-websocket:latest .
-
-# Login to ECR
-aws ecr get-login-password --region $AWS_REGION | \
-  docker login --username AWS --password-stdin \
-  $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com
-
-# Tag the image
-docker tag spring-boot-websocket:latest \
-  $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/spring-boot-websocket:latest
-
-# Push to ECR
-docker push $ACCOUNT_ID.dkr.ecr.$AWS_REGION.amazonaws.com/spring-boot-websocket:latest
-```
-
-### 2. Configure $TF_tool Variables
-
-Edit `terraform.tfvars` and update:
-- `ecr_repository_url`: Your container image URL
-- Other variables as needed
-
-### 3. Initialize Terraform
-
-```bash
-$TF_tool init
-```
-
-### 4. Review and Apply Configuration
-
-```bash
 # configure aws credentials for $TF_tool with IAM user key (AWS console > IAM > <youruser> > Security tab)
 export AWS_ACCESS_KEY_ID="***"
 export AWS_SECRET_ACCESS_KEY="***"
@@ -196,8 +128,6 @@ To enable HTTPS:
    ssl_certificate_arn = "arn:aws:acm:region:${account}:certificate/${id}"
    alb_port = 443  # Change to 443 for HTTPS
    ```
-
-## Important Notes
 
 ### Port Configuration
 
